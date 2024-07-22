@@ -5,6 +5,8 @@ dist/
 
 frontend/src/assets/pspdfkit-lib/
 frontend/assets/pspdfkit-lib/
+backend/target/
+.vscode
 
 *Zone.Identifier
 *Zone.Identifier:Zone.Identifier

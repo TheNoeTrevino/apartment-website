@@ -1,0 +1,42 @@
+<div class="appointment-form">
+  <h2 class="text-center mt-4">Set an Appointment</h2>
+  <form (ngSubmit)="onSubmit()">
+    <mat-form-field appearance="fill">
+      <mat-label>Location</mat-label>
+      <mat-select [(ngModel)]="location" name="location" required>
+        <mat-option *ngFor="let loc of locations" [value]="loc.id">{{ loc.name }}</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+      <mat-label>Appointment Date</mat-label>
+      <input matInput [matDatepicker]="picker" [(ngModel)]="appointmentDate" name="appointmentDate" required>
+      <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+      <mat-datepicker #picker></mat-datepicker>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+      <mat-label>Appointment Time</mat-label>
+      <mat-select [(ngModel)]="appointmentTime" name="appointmentTime" required>
+        <mat-option *ngFor="let time of availableTimes" [value]="time">{{ time }}</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+      <mat-label>Phone Number</mat-label>
+      <input matInput [(ngModel)]="phoneNumber" name="phoneNumber" required type="tel">
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+      <mat-label>Email</mat-label>
+      <input matInput [(ngModel)]="email" name="email" required type="email">
+    </mat-form-field>
+
+    <button mat-raised-button color="primary" type="submit">Set Appointment</button>
+  </form>
+</div>
+
+<h1 class="mt-4 text-center">Locations</h1>
+<p class="lead text-center">Take a look at our locations</p>
+  <hr>
+<app-map></app-map>

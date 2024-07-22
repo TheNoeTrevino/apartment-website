@@ -1,0 +1,25 @@
+<div class="container mt-5">
+  <h2>Apartments</h2>
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Location</th>
+        <th>Rooms</th>
+        <th>Square Footage</th>
+        <th>Date Built</th>
+        <th>Tenant</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let apartment of apartments">
+        <td>{{ apartment.apartmentName }}</td>
+        <td>{{ apartment.apartmentLocation }}</td>
+        <td>{{ apartment.numOfRooms }}</td>
+        <td>{{ apartment.squareFootage }}</td>
+        <td>{{ apartment.dateBuilt }}</td>
+        <td>{{ apartment.currentTenantName || 'N/A' }}</td>
+      </tr>
+    </tbody>
+  </table>
+</div>

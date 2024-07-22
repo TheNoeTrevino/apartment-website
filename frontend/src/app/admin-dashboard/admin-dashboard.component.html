@@ -1,0 +1,22 @@
+
+<div class="admin-dashboard">
+  <h2>Admin Dashboard</h2>
+  <div *ngIf="initialLoading" class="loading">Loading...</div>
+  <div *ngIf="!initialLoading && apartments.length === 0" class="no-data">No apartments available.</div>
+  <div *ngIf="!initialLoading && apartments.length > 0">
+    <div *ngFor="let apartment of apartments" class="card mb-2">
+      <div class="card-header">
+        <h3>{{ apartment.apartmentName }}</h3>
+      </div>
+      <div class="card-body">
+        <p><strong>Location:</strong> {{ apartment.apartmentLocation }}</p>
+        <p><strong>Number of Rooms:</strong> {{ apartment.numOfRooms }}</p>
+        <p><strong>Square Footage:</strong> {{ apartment.squareFootage }} sq ft</p>
+        <p><strong>Date Built:</strong> {{ apartment.dateBuilt | date }}</p>
+        <p><strong>Current Tenant:</strong> {{ apartment.currentTenantName }}</p>
+        <p><strong>Tenant Email:</strong> {{ apartment.currentTenantEmail }}</p>
+        <p><strong>Tenant Phone:</strong> {{ apartment.currentTenantPhone }}</p>
+      </div>
+    </div>
+  </div>
+</div>

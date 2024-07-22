@@ -1,0 +1,26 @@
+<div class="welcome-message mt-3">
+  <h1>Welcome to TRECA Apartments</h1>
+  <p>We are glad you have chosen to apply for our apartment complex, and we look forward to meeting you. </p>
+  <p>Fill out your application below.</p>
+</div>
+
+<div class="download-link">
+  <a href="assets/rental-application-template.pdf" download="your-file.pdf" class="btn btn-primary">
+    Download PDF
+  </a>
+</div>
+
+<form>
+  <div class="form-group">
+    <label for="fileUpload" class="d-block text-center">Upload your application PDF</label>
+    <input type="file" id="fileUpload" (change)="onFileSelected($event)" accept="application/pdf" class="form-control"
+      required />
+  </div>
+  <button type="button" class="btn btn-primary" (click)="onSubmit()" [disabled]="!selectedFile">Submit</button>
+</form>
+
+<div class="welcome-message">
+  <p>If you have any further questions, feel free to contact us below</p>
+</div>
+
+<app-contact-us></app-contact-us>

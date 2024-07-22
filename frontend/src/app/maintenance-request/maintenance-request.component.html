@@ -1,0 +1,30 @@
+<div class="maintenance-container my-5 py-5">
+  <h2>Maintenance Request</h2>
+  <form [formGroup]="maintenanceForm" (ngSubmit)="onSubmit()" class="mx-auto">
+    <div class="form-group">
+      <label for="tenantId">Tenant ID</label>
+      <input type="number" id="tenantId" formControlName="tenantId" class="form-control" required>
+      <div *ngIf="maintenanceForm.get('tenantId')?.invalid && maintenanceForm.get('tenantId')?.touched" class="error">
+        Tenant ID is required
+      </div>
+    </div>
+    <div class="form-group">
+      <label for="description">Description</label>
+      <textarea id="description" formControlName="description" class="form-control" rows="5" required></textarea>
+      <div *ngIf="maintenanceForm.get('description')?.invalid && maintenanceForm.get('description')?.touched"
+        class="error">
+        Description is required
+      </div>
+    </div>
+    <div class="form-group">
+      <label for="priority">Priority</label>
+      <select id="priority" formControlName="priority" class="form-control" required>
+        <option value="Low">Low</option>
+        <option value="Normal">Normal</option>
+        <option value="High">High</option>
+      </select>
+    </div>
+    <button type="submit" class="btn btn-primary" [disabled]="loading">Submit</button>
+    <div *ngIf="loading" class="loading">Loading...</div>
+  </form>
+</div>

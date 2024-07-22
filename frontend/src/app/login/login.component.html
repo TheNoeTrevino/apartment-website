@@ -1,0 +1,28 @@
+
+<div class="login-container my-5 py-5">
+  <h2 class="text-center">Login</h2>
+  <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="mx-auto">
+    <div class="form-group">
+      <label for="email">Email</label>
+      <input type="email" id="email" formControlName="email" class="form-control" required>
+      <div *ngIf="loginForm.get('email')?.invalid && loginForm.get('email')?.touched" class="error">
+        Valid email is required
+      </div>
+    </div>
+    <div class="form-group">
+      <label for="password">Password</label>
+      <input type="password" id="password" formControlName="password" class="form-control" required>
+      <div *ngIf="loginForm.get('password')?.invalid && loginForm.get('password')?.touched" class="error">
+        Password is required
+      </div>
+    </div>
+    <button type="submit" class="btn btn-primary w-100" [disabled]="loading">Login</button>
+    <div *ngIf="loading" class="loading">Loading...</div>
+  </form>
+</div>
+<h1 class="mt-4 text-center">Locations</h1>
+<p class="lead text-center">Take a look at our locations</p>
+  <hr>
+<app-map><app-map>
+  <hr>
+

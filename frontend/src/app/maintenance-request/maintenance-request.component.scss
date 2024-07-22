@@ -1,0 +1,42 @@
+.maintenance-container {
+  max-width: 600px;
+  margin: auto;
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  background: #f9f9f9;
+}
+
+.form-group {
+  margin-bottom: 15px;
+}
+
+.error {
+  color: red;
+  font-size: 0.875em;
+}
+
+.loading {
+  margin-top: 10px;
+  font-size: 0.875em;
+  color: #007bff;
+}
+
+.drop-zone {
+  width: 100%;
+  height: 100px;
+  border: 2px dashed #ccc;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 15px;
+  margin-bottom: 15px;
+  text-align: center;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.drop-zone:hover {
+  background-color: #f1f1f1;
+}
