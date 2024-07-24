@@ -1,6 +1,4 @@
-package backend.controllers;
-
-import backend.DTOs.CreateUpdateUserDTO;
+package backend.controllers; import backend.DTOs.CreateUpdateUserDTO;
 import backend.DTOs.UserDTO;
 import backend.services.UserService;
 import lombok.RequiredArgsConstructor;

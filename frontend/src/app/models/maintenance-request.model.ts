@@ -1,9 +1,7 @@
 export interface MaintenanceRequest {
-  id?: number;
-  tenantId: number;
-  description: string;
-  requestDate: Date;
-  status: string;
-  priority: string;
+    id: number;
+    description: string;
+    requestDate: string; // ISO date string
+    tenantId: number;
+    type: string;
 }
-

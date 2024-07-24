@@ -51,7 +51,7 @@ public class TestDataGenerator {
     @PostConstruct
     @Transactional
     public void generateTestData() {
-    Pattern phonePattern = Pattern.compile("\\(\\d{3}\\) \\d{3}-\\d{4}");
+        Pattern phonePattern = Pattern.compile("\\(\\d{3}\\) \\d{3}-\\d{4}");
 
         List<ApartmentComplex> complexes = IntStream.range(0, 5).mapToObj(i -> new ApartmentComplex()
                 .setComplexName(faker.company().name())
@@ -63,10 +63,8 @@ public class TestDataGenerator {
                 .setManagerEmail(faker.internet().emailAddress())
                 .setManagerPhone(generateValidPhoneNumber(phonePattern))
         ).collect(Collectors.toList());
-
         apartmentComplexRepository.saveAll(complexes);
 
-        // generate some apartments
         complexes.forEach(complex -> {
             List<Apartment> apartments = IntStream.range(0, complex.getNumOfUnits()).mapToObj(i -> new Apartment()
                     .setApartmentName(faker.lorem().characters(10, 255))
@@ -76,10 +74,8 @@ public class TestDataGenerator {
                     .setDateBuilt(faker.date().past(6000, TimeUnit.DAYS).toInstant().atZone(ZoneId.systemDefault()).toLocalDate())
                     .setApartmentComplex(complex)
             ).collect(Collectors.toList());
-
             apartmentRepository.saveAll(apartments);
 
-            // generate apartments
             apartments.forEach(apartment -> {
                 Tenant tenant = new Tenant()
                         .setFirstName(faker.name().firstName())
@@ -102,8 +98,6 @@ public class TestDataGenerator {
                         .setReferencePhone(generateValidPhoneNumber(phonePattern))
                         .setTenantStatus(TenantStatus.ACTIVE)
                         .setApartment(apartment);
-                        System.out.println(tenant.getEmergencyContactPhone());
-
                 tenantRepository.save(tenant);
 
                 Lease lease = new Lease()
@@ -113,7 +107,6 @@ public class TestDataGenerator {
                         .setSecurityDepositAmount(faker.number().randomDouble(2, 500, 2000))
                         .setTenant(tenant)
                         .setApartment(apartment);
-
                 leaseRepository.save(lease);
 
                 MaintenanceRequest request = new MaintenanceRequest()
@@ -121,16 +114,16 @@ public class TestDataGenerator {
                         .setRequestDate(LocalDateTime.now())
                         .setTenant(tenant)
                         .setType("General Maintenance");
-                    maintenanceRequestRepository.save(request);
+                maintenanceRequestRepository.save(request);
             });
         });
-  }
+    }
 
-  private String generateValidPhoneNumber(Pattern pattern) {
-    String phoneNumber;
-      do {
-        phoneNumber = faker.phoneNumber().phoneNumber();
-      } while (!pattern.matcher(phoneNumber).matches());
-  return phoneNumber;
-  }
+    private String generateValidPhoneNumber(Pattern pattern) {
+        String phoneNumber;
+        do {
+            phoneNumber = faker.phoneNumber().phoneNumber();
+        } while (!pattern.matcher(phoneNumber).matches());
+        return phoneNumber;
+    }
 }
