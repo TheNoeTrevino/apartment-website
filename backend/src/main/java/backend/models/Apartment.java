@@ -59,8 +59,7 @@ public class Apartment {
     @Email(message = "Tenant email should be valid")
     private String currentTenantEmail;
 
-    @Pattern(regexp = "^\\+?[0-9. ()-]{7,25}$", message = "Tenant phone number is invalid")
-    @Size(max = 255, message = "The phone number of the current tenant is too long. Please submit a phone number under 255 characters.")
+    @Pattern(regexp = "\\(\\d{3}\\) \\d{3}-\\d{4}( x\\d{4})?", message = "Emergency contact phone number must be in the format (###) ###-#### or (###) ###-#### x####")
     private String currentTenantPhone;
 
     @ManyToOne

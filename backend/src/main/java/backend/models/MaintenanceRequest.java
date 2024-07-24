@@ -30,4 +30,24 @@ public class MaintenanceRequest {
 
   @NotNull
   private String type;
+
+  public MaintenanceRequest setDescription(String description) {
+    this.description = description;
+    return this;
+  }
+
+  public MaintenanceRequest setRequestDate(LocalDateTime requestDate) {
+    this.requestDate = requestDate;
+    return this;
+  }
+
+  public MaintenanceRequest setTenant(Tenant tenant) {
+    this.tenant = tenant;
+    return this;
+  }
+
+  public MaintenanceRequest setType(String type) {
+    this.type = type;
+    return this;
+  }
 }

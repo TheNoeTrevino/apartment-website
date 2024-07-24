@@ -8,6 +8,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
+import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.PastOrPresent;
@@ -50,15 +51,16 @@ public class ApartmentComplex {
     @NotNull(message = "Date Built can not be null.")
     private LocalDate dateBuilt;
 
-    @Size(max = 255, message = "The name of this Apartment Complex is too long. Please submit a name under 255 characters.")
-    @NotNull(message = "Apartment Complex Name can not be null.")
+    @Size(max = 255, message = "The manager's name is too long. Please submit a name under 255 characters.")
+    @NotNull(message = "Manager Name can not be null.")
     private String managerName;
 
-    @Size(max = 255, message = "The name of this Apartment Complex is too long. Please submit a name under 255 characters.")
-    @NotNull(message = "Apartment Complex Name can not be null.")
+    @Email(message = "Manager email should be valid")
+    @Size(max = 255, message = "The manager's email is too long. Please submit an email under 255 characters.")
+    @NotNull(message = "Manager Email can not be null.")
     private String managerEmail;
 
-    @Size(max = 255, message = "The name of this Apartment Complex is too long. Please submit a name under 255 characters.")
+    @Size(max = 20, message = "Phone number is too long")
     @NotNull(message = "Apartment Complex Name can not be null.")
     private String managerPhone;
 
