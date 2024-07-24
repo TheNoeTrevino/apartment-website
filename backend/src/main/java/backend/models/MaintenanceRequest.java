@@ -30,6 +30,4 @@ public class MaintenanceRequest {
 
   @NotNull
   private String type;
-
-  // Add other fields as necessary
 }

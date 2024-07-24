@@ -8,6 +8,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToOne;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
@@ -65,4 +66,8 @@ public class Apartment {
     @ManyToOne
     @JoinColumn(name = "apartment_complex_id", nullable = false)
     private ApartmentComplex apartmentComplex;
+
+    @OneToOne
+    @JoinColumn(name = "lease_id", nullable = true)
+    private Lease lease;
 }

@@ -20,10 +20,8 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class ApartmentService {
 
-    @Autowired
     private final ApartmentRepository repo;
 
-    @Autowired
     private final ApartmentMapper mapper;
 
     // @GetMapping("/{id}")

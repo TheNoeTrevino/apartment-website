@@ -3,13 +3,11 @@ package backend.models;
 import java.time.LocalDate;
 import java.util.List;
 
-import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
-import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.PastOrPresent;
@@ -45,7 +43,6 @@ public class ApartmentComplex {
     private Integer numOfBuildings;
 
     @Min(value = 0, message = "There cannot be negative number of units")
-    @Max(value = 4, message = "blah blah blah!") // talk to mother about this
     @NotNull(message = "The number of units can not be null.")
     private Integer numOfUnits;
 
@@ -65,17 +62,6 @@ public class ApartmentComplex {
     @NotNull(message = "Apartment Complex Name can not be null.")
     private String managerPhone;
 
-    @OneToMany(mappedBy = "apartmentComplex", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "apartmentComplex")
     private List<Apartment> apartments;
-
-    public ApartmentComplex(String complexName, String complexLocation, Integer numOfBuildings,
-                    Integer numOfUnits, String managerName, String managerEmail, String managerPhone) {
-
-        this.complexName = complexName;
-        this.complexLocation = complexLocation;
-        this.numOfBuildings = numOfBuildings;
-        this.numOfUnits = numOfUnits;
-        this.managerName = managerName;
-        this.managerPhone = managerPhone;
-    }
 }

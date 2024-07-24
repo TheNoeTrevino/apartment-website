@@ -29,7 +29,6 @@ public class ApartmentComplexDTO {
     private Integer numOfBuildings;
 
     @Min(value = 0, message = "There cannot be negative number of units")
-    @Max(value = 4, message = "blah blah blah!") // talk to mother about this
     @NotNull(message = "The number of units can not be null.")
     private Integer numOfUnits;
 

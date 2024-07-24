@@ -8,8 +8,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
-import com.fasterxml.jackson.databind.util.ArrayBuilders.BooleanBuilder;
-
 import backend.DTOs.CreateUpdateTenantDTO;
 import backend.DTOs.TenantDTO;
 import backend.exceptions.NotFoundException;
