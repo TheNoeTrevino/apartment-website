@@ -10,7 +10,6 @@ import backend.models.ApartmentComplex;
 
 public interface ApartmentComplexRepository extends JpaRepository<ApartmentComplex, Long>,
         JpaSpecificationExecutor<ApartmentComplex> {
-            
     @Modifying
     @Query("delete ApartmentComplex d where d.id = :id")
     int deleteByApartmentComplexId(@Param(value = "id") Long id);
