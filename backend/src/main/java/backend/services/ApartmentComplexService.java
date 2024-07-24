@@ -2,11 +2,11 @@ package backend.services;
 
 import java.time.LocalDate;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import backend.DTOs.ApartmentComplexDTO;
 import backend.DTOs.CreateUpdateApartmentComplexDTO;
@@ -20,23 +20,18 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class ApartmentComplexService {
 
-    @Autowired
-    private ApartmentComplexRepository repo;
+    private final ApartmentComplexRepository repo;
+    private final ApartmentComplexMapper mapper;
 
-    @Autowired
-    private ApartmentComplexMapper mapper;
-
-    // @GetMapping("/{id}")
     public ApartmentComplexDTO getApartmentComplexById(Long id) {
-        return mapper.apartmentComplexToApartmentComplexDTO(repo.findById(id)
+        return mapper.toDTO(repo.findById(id)
             .orElseThrow(() -> new NotFoundException(id)));
     }
 
-    // GetMapping("")
-    public Page<ApartmentComplexDTO> getAllApartmentComplexPageable(Pageable pageable,String complexName, String complexLocation,
-    Integer numOfBuildings, Integer numOfUnits, LocalDate dateBuilt, String managerName, String managerEmail, String managerPhone) {
+    public Page<ApartmentComplexDTO> getAllApartmentComplexPageable(Pageable pageable, String complexName, String complexLocation,
+                                                                    Integer numOfBuildings, Integer numOfUnits, LocalDate dateBuilt,
+                                                                    String managerName, String managerEmail, String managerPhone) {
 
-        // Building query
         Specification<ApartmentComplex> spec = Specification.where(null);
 
         if (complexName != null) {
@@ -72,50 +67,34 @@ public class ApartmentComplexService {
         }
 
         Page<ApartmentComplex> apartmentComplexPage = repo.findAll(spec, pageable);
-        Page<ApartmentComplexDTO> apartmentComplexDTOPage = apartmentComplexPage.map(mapper::apartmentComplexToApartmentComplexDTO);
-
-        return apartmentComplexDTOPage;
+        return apartmentComplexPage.map(mapper::toDTO);
     }
 
-    // PostMapping("")
     public ApartmentComplexDTO postApartmentComplex(CreateUpdateApartmentComplexDTO newApartmentComplexDTO) {
-
-        // Map DTO into entity
-        ApartmentComplex apartmentComplex = mapper.createUpdateApartmentComplexDTOToApartmentComplex(newApartmentComplexDTO);
+        ApartmentComplex apartmentComplex = mapper.toEntity(newApartmentComplexDTO);
         apartmentComplex = repo.save(apartmentComplex);
-
-        // Map saved entity into a response DTO
-        ApartmentComplexDTO responseDTO = mapper.apartmentComplexToApartmentComplexDTO(apartmentComplex);
-
-        return responseDTO;
+        return mapper.toDTO(apartmentComplex);
     }
 
-    // PatchMapping("/{id}")
+    @Transactional
     public ApartmentComplexDTO updateApartmentComplex(Long id, CreateUpdateApartmentComplexDTO apartmentComplexDetails) {
+        ApartmentComplex existingApartmentComplex = repo.findById(id)
+            .orElseThrow(() -> new NotFoundException(id));
 
-        // Check if drum corps exists
-        repo.findById(id).orElseThrow(() -> new NotFoundException(id)); // test for not found in patch
+        mapper.updateEntityFromDTO(apartmentComplexDetails, existingApartmentComplex);
+        repo.save(existingApartmentComplex);
 
-        // Map dto to the already existing entity
-        ApartmentComplex updatedApartmentComplex = mapper.createUpdateApartmentComplexDTOToApartmentComplex(apartmentComplexDetails);
-        updatedApartmentComplex.setId(id); // to keep original id, avoid autogeneration
-        repo.save(updatedApartmentComplex);
-
-        // Map saved entity back into reponseDTO and return
-        ApartmentComplexDTO responseDTO = mapper.apartmentComplexToApartmentComplexDTO(updatedApartmentComplex);
-
-        return responseDTO;
+        return mapper.toDTO(existingApartmentComplex);
     }
 
-    // @DeleteMapping("/{id}")
+    @Transactional
     public ApartmentComplexDTO deleteApartmentComplexById(Long id) {
+        ApartmentComplex apartmentComplex = repo.findById(id)
+            .orElseThrow(() -> new NotFoundException(id));
 
-        // Map corps into DTO
-        ApartmentComplexDTO apartmentComplexDTO = mapper.apartmentComplexToApartmentComplexDTO(repo.findById(id).
-            orElseThrow(() -> new NotFoundException(id)));
-
-        repo.deleteByApartmentComplexId(id);
-
+        ApartmentComplexDTO apartmentComplexDTO = mapper.toDTO(apartmentComplex);
+        repo.deleteById(id);
         return apartmentComplexDTO;
     }
 }
+
