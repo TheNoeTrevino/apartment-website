@@ -7,14 +7,18 @@ import backend.models.Lease;
 import backend.models.MaintenanceRequest;
 import backend.models.Tenant;
 import backend.models.TenantStatus;
+import backend.models.User;
+import backend.models.UserAuthority;
 import backend.repositories.ApartmentComplexRepository;
 import backend.repositories.ApartmentRepository;
 import backend.repositories.LeaseRepository;
 import backend.repositories.MaintenanceRequestRepository;
 import backend.repositories.TenantRepository;
+import backend.repositories.UserRepository;
 
 import com.github.javafaker.Faker;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -45,6 +49,12 @@ public class TestDataGenerator {
 
     @Autowired
     private MaintenanceRequestRepository maintenanceRequestRepository;
+
+    @Autowired
+    private UserRepository userRepository;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     private final Faker faker = new Faker();
 
@@ -117,6 +127,22 @@ public class TestDataGenerator {
                 maintenanceRequestRepository.save(request);
             });
         });
+
+        User admin = new User()
+                .setFirstName("Admin")
+                .setLastName("User")
+                .setUserName("admin@email.com")
+                .setPassword(passwordEncoder.encode("admin123"))
+                .setAuthority(UserAuthority.ADMIN);
+        userRepository.save(admin);
+
+        User tenant = new User()
+                .setFirstName("Tenant")
+                .setLastName("User")
+                .setUserName("tenant@email.com")
+                .setPassword(passwordEncoder.encode("tenant123"))
+                .setAuthority(UserAuthority.TENANT);
+        userRepository.save(tenant);
     }
 
     private String generateValidPhoneNumber(Pattern pattern) {

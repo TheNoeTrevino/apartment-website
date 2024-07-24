@@ -6,6 +6,8 @@ import backend.mappers.UserMapper;
 import backend.models.User;
 import backend.repositories.UserRepository;
 import lombok.RequiredArgsConstructor;
+
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -18,10 +20,12 @@ public class UserService {
 
     private final UserRepository repo;
     private final UserMapper mapper;
+    private final PasswordEncoder passwordEncoder;
 
     @Transactional
     public UserDTO createUser(CreateUpdateUserDTO userDTO) {
         User user = mapper.toEntity(userDTO);
+        user.setPassword(passwordEncoder.encode(userDTO.getPassword()));
         user = repo.save(user);
         return mapper.toDTO(user);
     }
@@ -31,6 +35,7 @@ public class UserService {
         User existingUser = repo.findById(id)
                 .orElseThrow(() -> new NotFoundException(id));
         mapper.updateEntityFromDTO(userDTO, existingUser);
+        existingUser.setPassword(passwordEncoder.encode(userDTO.getPassword()));
         repo.save(existingUser);
         return mapper.toDTO(existingUser);
     }
