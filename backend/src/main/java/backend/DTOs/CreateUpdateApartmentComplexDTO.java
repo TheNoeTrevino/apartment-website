@@ -1,6 +1,7 @@
 package backend.DTOs;
 
 import java.time.LocalDate;
+import java.util.List;
 
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
@@ -48,4 +49,6 @@ public class CreateUpdateApartmentComplexDTO {
     @Size(max = 255, message = "The name of this Apartment Complex is too long. Please submit a name under 255 characters.")
     @NotNull(message = "Apartment Complex Name can not be null.")
     private String managerPhone;
+
+    private List<Long> apartmentIds; // Include this if necessary for updates, otherwise ignore
 }

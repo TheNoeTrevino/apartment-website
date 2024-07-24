@@ -2,7 +2,8 @@ package backend.DTOs;
 
 import java.time.LocalDate;
 
-import backend.models.Apartment;
+import backend.models.TenantStatus;
+import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.Min;
@@ -77,11 +78,11 @@ public class CreateUpdateTenantDTO {
     @NotNull(message = "Reference phone number cannot be null")
     private String referencePhone;
 
-    // @Enumerated(EnumType.STRING)
-    // @NotNull(message = "Tenant status cannot be null")
-    // private TenantStatus tenantStatus;
+    @Enumerated(EnumType.STRING)
+    @NotNull(message = "Tenant status cannot be null")
+    private TenantStatus tenantStatus;
 
     @NotNull(message = "Apartment cannot be null")
-    private Apartment apartment;
+    private long apartmentId;
 }
 

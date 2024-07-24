@@ -2,6 +2,8 @@ package backend.DTOs;
 
 import java.time.LocalDate;
 
+import backend.models.Lease;
+import backend.models.TenantStatus;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
@@ -27,4 +29,8 @@ public class TenantDTO {
     private String referenceName;
     private String referenceRelationship;
     private String referencePhone;
+    private long apartmentId;
+    private Double rentDue;
+    private TenantStatus tenantStatus;
+    private long leaseId;
 }
