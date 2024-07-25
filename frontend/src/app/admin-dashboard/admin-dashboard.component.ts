@@ -1,100 +1,56 @@
-
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { HttpClientModule } from '@angular/common/http';
-import { AdminService } from '../admin.service';
-import { Apartment } from '../models/apartment.model';
+import { ReactiveFormsModule } from '@angular/forms';
+import { MatPaginatorModule, PageEvent } from '@angular/material/paginator';
+import { ApartmentDTO } from '../models/apartment.dto';
+import { ApartmentService } from '../apartment.service';
+import { AuthService } from '../auth.service';
+import { warn } from 'console';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-admin-dashboard',
   standalone: true,
-  imports: [CommonModule, HttpClientModule],
+  imports: [CommonModule, MatPaginatorModule, ReactiveFormsModule],
   templateUrl: './admin-dashboard.component.html',
   styleUrls: ['./admin-dashboard.component.scss']
 })
 export class AdminDashboardComponent implements OnInit {
-  apartments: Apartment[] = [];
-  initialLoading = true;
 
-  constructor(private adminService: AdminService) { }
+  apartments: ApartmentDTO[] = [];
+  initialLoading = true;
+  page = 0;
+  size = 10;
+  totalElements = 0;
+
+  constructor(private apartmentService: ApartmentService, private authService: AuthService, private router: Router) { }
 
   ngOnInit() {
     this.getApartments();
   }
 
+  logout() {
+    this.authService.signOut();
+    this.router.navigateByUrl('/');
+  }
+
   getApartments() {
-    // Hard-coded apartment data
-    this.apartments = [
-      {
-        id: 1,
-        apartmentName: 'Apartment A',
-        apartmentLocation: 'Location A',
-        numOfRooms: 2,
-        squareFootage: 800,
-        dateBuilt: '2020-01-01',
-        currentTenantName: 'John Doe',
-        currentTenantEmail: 'johndoe@example.com',
-        currentTenantPhone: '+123456789',
-        apartmentComplex: {
-          id: 1,
-          complexName: 'Complex A',
-          complexLocation: 'Complex Location A',
-          numOfBuildings: 3,
-          numOfUnits: 10,
-          dateBuilt: '2015-05-15',
-          managerName: 'Manager A',
-          managerEmail: 'managera@example.com',
-          managerPhone: '+987654321',
-          apartments: []
-        }
+    this.apartmentService.getApartments(this.page, this.size).subscribe(
+      (response) => {
+        this.apartments = response.content;
+        this.totalElements = response.totalElements;
+        this.initialLoading = false;
       },
-      {
-        id: 2,
-        apartmentName: 'Apartment B',
-        apartmentLocation: 'Location B',
-        numOfRooms: 3,
-        squareFootage: 1200,
-        dateBuilt: '2018-05-15',
-        currentTenantName: 'Jane Doe',
-        currentTenantEmail: 'janedoe@example.com',
-        currentTenantPhone: '+987654321',
-        apartmentComplex: {
-          id: 1,
-          complexName: 'Complex A',
-          complexLocation: 'Complex Location A',
-          numOfBuildings: 3,
-          numOfUnits: 10,
-          dateBuilt: '2015-05-15',
-          managerName: 'Manager A',
-          managerEmail: 'managera@example.com',
-          managerPhone: '+987654321',
-          apartments: []
-        }
-      },
-      {
-        id: 3,
-        apartmentName: 'Apartment C',
-        apartmentLocation: 'Location B',
-        numOfRooms: 3,
-        squareFootage: 1200,
-        dateBuilt: '2018-05-15',
-        currentTenantName: 'Jane Doe',
-        currentTenantEmail: 'janedoe@example.com',
-        currentTenantPhone: '+987654321',
-        apartmentComplex: {
-          id: 1,
-          complexName: 'Complex A',
-          complexLocation: 'Complex Location A',
-          numOfBuildings: 5,
-          numOfUnits: 10,
-          dateBuilt: '2015-05-15',
-          managerName: 'Manager A',
-          managerEmail: 'managera@example.com',
-          managerPhone: '+987654321',
-          apartments: []
-        }
+      (error) => {
+        console.error('Error fetching apartments', error);
+        this.initialLoading = false;
       }
-    ];
-    this.initialLoading = false;
+    );
+  }
+
+  onPageChange(event: PageEvent) {
+    this.page = event.pageIndex;
+    this.size = event.pageSize;
+    this.getApartments();
   }
 }
