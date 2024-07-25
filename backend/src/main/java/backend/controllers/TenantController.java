@@ -47,7 +47,8 @@ public class TenantController {
 
   @GetMapping("")
   public ResponseEntity<Page<TenantDTO>> getAllTenant(
-      @Valid @PageableConstraint(maxPerPage = 50) @PageableDefault(page = 0, size = 25, sort = "id") Pageable pageable,
+      @PageableDefault(page = 0, size = 25, sort = "id")
+      @Valid @PageableConstraint(message = "Invalid page size", maxPerPage = 50) Pageable pageable,
       @RequestParam(required = false) String firstName,
       @RequestParam(required = false) String lastName,
       @RequestParam(required = false) LocalDate dateOfBirth,

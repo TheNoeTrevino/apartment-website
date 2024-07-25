@@ -43,8 +43,8 @@ import lombok.RequiredArgsConstructor;
 
     @GetMapping("")
     public ResponseEntity<Page<ApartmentComplexDTO>> getAllApartmentComplex(
-        @PageableDefault(page = 0, size = 2, sort = {"complexName"}) Pageable pageable,
-        @Valid @PageableConstraint(message = "Invalid page size", maxPerPage = 50)
+        @PageableDefault(page = 0, size = 2, sort = {"complexName"})
+        @Valid @PageableConstraint(message = "Invalid page size", maxPerPage = 50) Pageable pageable,
             @RequestParam(required = false) String complexName,
             @RequestParam(required = false) String complexLocation,
             @RequestParam(required = false) Integer numOfBuildings,

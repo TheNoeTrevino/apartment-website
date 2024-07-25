@@ -45,8 +45,8 @@ public class ApartmentController {
 
     @GetMapping("")
     public ResponseEntity<Page<ApartmentDTO>> getAllApartments(
-        @PageableDefault(page = 0, size = 10, sort = {"apartmentName"}) Pageable pageable,
-        @Valid @PageableConstraint(message = "Invalid page size", maxPerPage = 50)
+            @PageableDefault(page = 0, size = 10, sort = {"apartmentName"})
+            @Valid @PageableConstraint(message = "Invalid page size", maxPerPage = 50) Pageable pageable,
             @RequestParam(required = false) String apartmentName,
             @RequestParam(required = false) String apartmentLocation,
             @RequestParam(required = false) Integer numOfRooms,
