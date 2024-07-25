@@ -30,7 +30,7 @@ import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/api/apartments")
+@RequestMapping("/apartments")
 public class ApartmentController {
 
     private static final Logger logger = LoggerFactory.getLogger(ApartmentController.class);
