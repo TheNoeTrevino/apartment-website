@@ -9,6 +9,8 @@ import { MaintenanceRequestComponent } from './maintenance-request/maintenance-r
 import { AdminDashboardComponent } from './admin-dashboard/admin-dashboard.component';
 import { TenantDashboardComponent } from './tenant-dashboard/tenant-dashboard.component';
 import { PayRentComponent } from './pay-rent/pay-rent.component';
+import { AuthService } from './auth.service';
+import { inject } from '@angular/core';
 
 export const routes: Routes = [
   { path: '', component: HomeComponent },
@@ -18,7 +20,7 @@ export const routes: Routes = [
   { path: 'schedule-viewing', component: ScheduleViewingComponent },
   { path: 'login', component: LoginComponent },
   { path: 'maintenance-request', component: MaintenanceRequestComponent },
-  { path: 'admin-dashboard', component: AdminDashboardComponent },
+  { path: 'admin-dashboard', component: AdminDashboardComponent},
   { path: 'tenant-dashboard', component: TenantDashboardComponent },
   { path: 'pay-rent', component: PayRentComponent },
 ];

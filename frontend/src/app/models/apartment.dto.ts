@@ -1,15 +1,15 @@
 import { ApartmentComplexDTO } from "./apartment-complex.dto";
 
 export interface ApartmentDTO {
-  complexId: number;
+  id: number;
   apartmentName: string;
   apartmentLocation: string;
   numOfRooms: number;
   squareFootage: number;
-  dateBuilt: string; // ISO date string
+  dateBuilt: string;
   currentTenantName?: string;
   currentTenantEmail?: string;
   currentTenantPhone?: string;
-  apartmentComplex: ApartmentComplexDTO;
+  apartmentComplexId: number;
 }
 

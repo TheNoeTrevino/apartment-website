@@ -1,35 +1,87 @@
-import { Injectable } from '@angular/core';
+import { Injectable, Inject, PLATFORM_ID } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable, of } from 'rxjs';
-import { catchError, map } from 'rxjs/operators';
+import { BehaviorSubject, Observable } from 'rxjs';
+import { map, switchMap, filter } from 'rxjs/operators';
+import { jwtDecode, JwtPayload } from 'jwt-decode';
+import { isPlatformBrowser } from '@angular/common';
+import { Router, UrlTree } from '@angular/router';
+
+export interface UserData {
+  token: string;
+  id: string;
+}
+
+export const USER_STORAGE_KEY = 'APP_TOKEN';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
-  private hardcodedUsers = [
-    { email: 'admin123@email.com', password: 'admin123', role: 'ADMIN' },
-    { email: 'tenant123@email.com', password: 'tenant123', role: 'TENANT' }
-  ];
+  private user: BehaviorSubject<UserData | null | undefined> = new BehaviorSubject<UserData | null | undefined>(undefined);
 
-  constructor(private http: HttpClient) { }
+  constructor(
+    private http: HttpClient,
+    @Inject(PLATFORM_ID) private platformId: any
+  ) {
+    this.loadUser();
+  }
 
-  login(email: string, password: string): Observable<any> {
-    const user = this.hardcodedUsers.find(u => u.email === email && u.password === password);
-    if (user) {
-      localStorage.setItem('token', 'dummy-token'); // Store a dummy token
-      localStorage.setItem('role', user.role); // Store the user's role
-      return of({ success: true, user });
-    } else {
-      return of({ success: false, error: 'No user found' });
+  loadUser() {
+    if (isPlatformBrowser(this.platformId)) {
+      const token = localStorage.getItem(USER_STORAGE_KEY);
+
+      if (token) {
+        const decoded: JwtPayload = jwtDecode<JwtPayload>(token);
+
+        const userData: UserData = {
+          token: token,
+          id: decoded.sub!
+        };
+        this.user.next(userData);
+      } else {
+        this.user.next(null);
+      }
     }
   }
 
-  redirectUser(role: string) {
-    if (role === 'ADMIN') {
-      window.location.href = '/admin-dashboard';
-    } else if (role === 'TENANT') {
-      window.location.href = '/tenant-dashboard';
-    }
+  login(email: string, password: string): Observable<any> {
+    return this.http.post('http://localhost:8080/api/auth/login', { email, password }).pipe(
+      map((response: any) => {
+        console.log('result: ', response);
+        if (isPlatformBrowser(this.platformId)) {
+          localStorage.setItem(USER_STORAGE_KEY, response.token);
+        }
+        const decoded: JwtPayload = jwtDecode<JwtPayload>(response.token);
+
+        const userData: UserData = {
+          token: response.token,
+          id: decoded.sub!
+        };
+        this.user.next(userData);
+
+        return userData;
+      })
+    );
+  }
+
+  register(email: string, password: string): Observable<any> {
+    return this.http.post('http://localhost:8080/api/auth/register', { email, password }).pipe(
+      switchMap((response: any) => {
+        return this.login(email, password);
+      })
+    );
+  }
+
+  signOut() {
+    localStorage.removeItem(USER_STORAGE_KEY);
+    this.user.next(null);
+  }
+
+  getCurrentUser() {
+    return this.user.asObservable();
+  }
+
+  getCurrentUserId() {
+    return this.user.getValue()!.id;
   }
 }

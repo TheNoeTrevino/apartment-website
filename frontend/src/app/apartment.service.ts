@@ -1,53 +1,56 @@
 
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
 import { catchError } from 'rxjs/operators';
-import { Apartment } from './models/apartment.model';
+import { ApartmentDTO } from './models/apartment.dto';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ApartmentService {
-  private baseUrl = '//localhost:5432/apartment-project/apartment';
+  private baseUrl = 'http://localhost:8080/api/apartments';
 
   constructor(private http: HttpClient) { }
 
-  getApartments(): Observable<Apartment[]> {
-    return this.http.get<Apartment[]>(this.baseUrl).pipe(
-      catchError(this.handleError<Apartment[]>('getApartments', []))
+  getApartments(page: number, size: number): Observable<any> {
+    let params = new HttpParams();
+    params = params.append('page', page.toString());
+    params = params.append('size', size.toString());
+
+    return this.http.get<any>(this.baseUrl, { params }).pipe(
+      catchError(this.handleError<any>('getApartments', []))
     );
   }
 
-  getApartmentById(id: number): Observable<Apartment> {
-    return this.http.get<Apartment>(`${this.baseUrl}/${id}`).pipe(
-      catchError(this.handleError<Apartment>('getApartmentById'))
+  getApartmentById(id: number): Observable<ApartmentDTO> {
+    return this.http.get<ApartmentDTO>(`${this.baseUrl}/${id}`).pipe(
+      catchError(this.handleError<ApartmentDTO>('getApartmentById'))
     );
   }
 
-  createApartment(apartment: Apartment): Observable<Apartment> {
-    return this.http.post<Apartment>(this.baseUrl, apartment).pipe(
-      catchError(this.handleError<Apartment>('createApartment'))
+  createApartment(apartment: ApartmentDTO): Observable<ApartmentDTO> {
+    return this.http.post<ApartmentDTO>(this.baseUrl, apartment).pipe(
+      catchError(this.handleError<ApartmentDTO>('createApartment'))
     );
   }
 
-  updateApartment(id: number, apartment: Apartment): Observable<Apartment> {
-    return this.http.patch<Apartment>(`${this.baseUrl}/${id}`, apartment).pipe(
-      catchError(this.handleError<Apartment>('updateApartment'))
+  updateApartment(id: number, apartment: ApartmentDTO): Observable<ApartmentDTO> {
+    return this.http.put<ApartmentDTO>(`${this.baseUrl}/${id}`, apartment).pipe(
+      catchError(this.handleError<ApartmentDTO>('updateApartment'))
     );
   }
 
-  deleteApartment(id: number): Observable<Apartment> {
-    return this.http.delete<Apartment>(`${this.baseUrl}/${id}`).pipe(
-      catchError(this.handleError<Apartment>('deleteApartment'))
+  deleteApartment(id: number): Observable<ApartmentDTO> {
+    return this.http.delete<ApartmentDTO>(`${this.baseUrl}/${id}`).pipe(
+      catchError(this.handleError<ApartmentDTO>('deleteApartment'))
     );
   }
 
   private handleError<T>(operation = 'operation', result?: T) {
     return (error: any): Observable<T> => {
-      console.error(error);
+      console.error(`${operation} failed: ${error.message}`);
       return of(result as T);
     };
   }
 }
-

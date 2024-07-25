@@ -1,3 +1,5 @@
+import { warn } from "console";
+
 export interface ApartmentComplexDTO {
   complexId: number;
   complexName: string;
@@ -9,4 +11,3 @@ export interface ApartmentComplexDTO {
   managerEmail: string;
   managerPhone: string;
 }
-
