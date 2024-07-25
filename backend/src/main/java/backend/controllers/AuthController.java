@@ -61,15 +61,32 @@ public class AuthController {
             return new ResponseEntity<>("Username is taken!", HttpStatus.BAD_REQUEST);
         }
 
-        UserEntity user = new UserEntity();
-        user.setUsername(registerDto.getUsername());
-        user.setPassword(passwordEncoder.encode((registerDto.getPassword())));
+        try {
+            // Log user creation
+            System.out.println("Creating user with username: " + registerDto.getUsername());
 
-        Role roles = roleRepository.findByName("USER").get();
-        user.setRoles(Collections.singletonList(roles));
+            // Create user entity and set details
+            UserEntity user = new UserEntity();
+            user.setUsername(registerDto.getUsername());
+            user.setPassword(passwordEncoder.encode(registerDto.getPassword()));
 
-        userRepository.save(user);
+            // Log role retrieval
+            System.out.println("Retrieving role ROLE_TENANT");
+            Role role = roleRepository.findByName("ROLE_TENANT").orElseThrow(() -> new RuntimeException("Error: Role is not found."));
+            user.setRoles(Collections.singletonList(role));
 
-        return new ResponseEntity<>("User registered success!", HttpStatus.OK);
+            // Log before saving user
+            System.out.println("Saving user to the database");
+            userRepository.save(user);
+
+            // Log successful save
+            System.out.println("User registered successfully");
+            return new ResponseEntity<>("User registered success!", HttpStatus.OK);
+
+        } catch (Exception e) {
+            // Log any exceptions
+            e.printStackTrace();
+            return new ResponseEntity<>("An error occurred: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 }

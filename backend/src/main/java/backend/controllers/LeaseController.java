@@ -43,8 +43,9 @@ public class LeaseController {
 
   @GetMapping("")
   public ResponseEntity<Page<LeaseDTO>> getAllLeases(
-      @PageableDefault(page = 0, size = 10, sort = { "leaseStartDate" }) Pageable pageable,
-      @Valid @PageableConstraint(message = "Invalid page size", maxPerPage = 50) @RequestParam(required = false) LocalDate leaseStartDate,
+      @PageableDefault(page = 0, size = 10, sort = { "leaseStartDate" })
+      @Valid @PageableConstraint(message = "Invalid page size", maxPerPage = 50) Pageable pageable,
+      @RequestParam(required = false) LocalDate leaseStartDate,
       @RequestParam(required = false) LocalDate leaseEndDate,
       @RequestParam(required = false) Double rentAmount,
       @RequestParam(required = false) Double securityDepositAmount,
